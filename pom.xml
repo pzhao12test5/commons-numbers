@@ -102,7 +102,6 @@
          name of the base package evolves with major release numbers
          (see "commons.osgi.symbolicName", below). -->
     <commons.componentid>numbers</commons.componentid>
-    <commons.module.name>org.apache.commons.numbers</commons.module.name>
     <!-- This value must reflect the current name of the base package. -->
     <commons.osgi.symbolicName>org.apache.commons.numbers</commons.osgi.symbolicName>
     <!-- OSGi -->
@@ -161,7 +160,7 @@
   <gib.commitRange>${env.TRAVIS_COMMIT_RANGE}</gib.commitRange>
         <gib.enabled>true</gib.enabled>
         <gib.useEkstazi>true</gib.useEkstazi>
-        <gib.excludePathRegex>(.*\.txt$)|(.*\.md$)|(.*\.html$)|(.*\.rst$)|(.*\.scss$)|(.*\.css$)|(.*\.png$)|(.*\.py$)|(.*README$)|(.*\.jpg$)|(.*\.jpeg$)|(.*NOTICE$)|(.*\.gitignore$)</gib.excludePathRegex>
+        <gib.excludePathRegex>(.*\.apt$)|(.*\.txt$)|(.*\.md$)|(.*\.html$)|(.*\.rst$)|(.*\.scss$)|(.*\.css$)|(.*\.png$)|(.*\.py$)|(.*README$)|(.*\.jpg$)|(.*\.jpeg$)|(.*NOTICE$)|(.*\.gitignore$)</gib.excludePathRegex>
     </properties>
 
   <build>
@@ -246,9 +245,9 @@
             <exclude>src/site/resources/txt/userguide/stress/dh/**</exclude>
             <exclude>src/site/resources/txt/userguide/stress/tu/**</exclude>
             <exclude>dist-archive/**</exclude>
-          <exclude>**/.ekstazi/**</exclude>
+          <exclude>**/NOW</exclude>
                         <exclude>**/.travis.yml</exclude>
-                        <exclude>**/NOW</exclude>
+                        <exclude>**/.ekstazi/**</exclude>
                     </excludes>
         </configuration>
       </plugin>
@@ -615,10 +614,7 @@
     <module>commons-numbers-primes</module>
     <module>commons-numbers-quaternion</module>
     <module>commons-numbers-fraction</module>
-    <module>commons-numbers-angle</module>
     <module>commons-numbers-gamma</module>
-    <module>commons-numbers-combinatorics</module>
-    <module>commons-numbers-arrays</module>
   </modules>
 
 </project>
