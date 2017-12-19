@@ -616,6 +616,7 @@
     <module>commons-numbers-fraction</module>
     <module>commons-numbers-angle</module>
     <module>commons-numbers-gamma</module>
+    <module>commons-numbers-combinatorics</module>
   </modules>
 
 </project>
