@@ -21,25 +21,66 @@ import org.junit.Test;
 
 
 /**
+ * Tests for {@link ContinuedFraction}.
  */
 public class ContinuedFractionTest {
 
     @Test
     public void testGoldenRatio() throws Exception {
         ContinuedFraction cf = new ContinuedFraction() {
-
             @Override
             public double getA(int n, double x) {
-                return 1.0;
+                return 1;
             }
 
             @Override
             public double getB(int n, double x) {
-                return 1.0;
+                return 1;
             }
         };
 
-        double gr = cf.evaluate(0.0, 10e-9);
-        Assert.assertEquals(1.61803399, gr, 10e-9);
+        final double eps = 1e-8;
+        double gr = cf.evaluate(0, eps);
+        Assert.assertEquals(1.61803399, gr, eps);
+    }
+
+    // NUMBERS-46
+    @Test
+    public void testOneIteration() {
+        ContinuedFraction cf = new ContinuedFraction() {
+            @Override
+            public double getA(int n, double x) {
+                return 1;
+            }
+
+            @Override
+            public double getB(int n, double x) {
+                return 1;
+            }
+        };
+
+        final double eps = 10;
+        double gr = cf.evaluate(0, eps, 1);
+        Assert.assertEquals(1.61, gr, eps);
+    }
+
+    // NUMBERS-46
+    @Test
+    public void testTwoIterations() {
+        ContinuedFraction cf = new ContinuedFraction() {
+            @Override
+            public double getA(int n, double x) {
+                return 1;
+            }
+
+            @Override
+            public double getB(int n, double x) {
+                return 1;
+            }
+        };
+
+        final double eps = 0.5;
+        double gr = cf.evaluate(0, eps, 2);
+        Assert.assertEquals(1.5, gr, 0d);
     }
 }
