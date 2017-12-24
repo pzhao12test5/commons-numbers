@@ -24,9 +24,33 @@ import org.apache.commons.numbers.fraction.ContinuedFraction;
  *
  * Class is immutable.
  */
-public class RegularizedGamma {
+public abstract class RegularizedGamma {
     /** Maximum allowed numerical error. */
     private static final double DEFAULT_EPSILON = 1e-15;
+
+    /**
+     * @param a Parameter.
+     * @param x Argument.
+     * @param epsilon When the absolute value of the n-th element in the
+     * series is less than epsilon the approximation ceases to calculate
+     * further elements in the series.
+     * @param maxIterations Maximum number of iterations.
+     * @return the value of the function.
+     * @throws IllegalArgumentException if the algorithm fails to converge.
+     */
+    public abstract double value(double a,
+                                 double x,
+                                 double epsilon,
+                                 int maxIterations);
+
+    /**
+     * @param a Parameter.
+     * @param x Argument.
+     * @return the value of the function.
+     * @throws IllegalArgumentException if the algorithm fails to converge.
+     */
+    public abstract double value(double a,
+                                 double x);
 
     /**
      * \( P(a, x) \) <a href="http://mathworld.wolfram.com/RegularizedGammaFunction.html">
@@ -41,7 +65,7 @@ public class RegularizedGamma {
          * {@inheritDoc}
          */
         public static double value(double a,
-                                   double x) {
+                            double x) {
             return value(a, x, DEFAULT_EPSILON, Integer.MAX_VALUE);
         }
 
@@ -67,9 +91,9 @@ public class RegularizedGamma {
          * {@inheritDoc}
          */
         public static double value(double a,
-                                   double x,
-                                   double epsilon,
-                                   int maxIterations) {
+                            double x,
+                            double epsilon,
+                            int maxIterations) {
             if (Double.isNaN(a) ||
                 Double.isNaN(x) ||
                 a <= 0 ||
@@ -120,7 +144,7 @@ public class RegularizedGamma {
          * {@inheritDoc}
          */
         public static double value(double a,
-                                   double x) {
+                            double x) {
             return value(a, x, DEFAULT_EPSILON, Integer.MAX_VALUE);
         }
 
@@ -143,9 +167,9 @@ public class RegularizedGamma {
          * {@inheritDoc}
          */
         public static double value(final double a,
-                                   double x,
-                                   double epsilon,
-                                   int maxIterations) {
+                            double x,
+                            double epsilon,
+                            int maxIterations) {
             if (Double.isNaN(a) ||
                 Double.isNaN(x) ||
                 a <= 0 ||

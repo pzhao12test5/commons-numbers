@@ -26,54 +26,42 @@ import org.apache.commons.numbers.core.Precision;
  */
 public abstract class ContinuedFraction {
     /** Maximum allowed numerical error. */
-    private static final double DEFAULT_EPSILON = 1e-9;
+    private static final double DEFAULT_EPSILON = 10e-9;
 
     /**
-     * Defines the <a href="http://mathworld.wolfram.com/ContinuedFraction.html">
-     * {@code n}-th "a" coefficient</a> of the continued fraction.
-     *
-     * @param n Index of the coefficient to retrieve.
-     * @param x Evaluation point.
-     * @return the coefficient <code>a<sub>n</sub></code>.
+     * Access the n-th a coefficient of the continued fraction.  Since a can be
+     * a function of the evaluation point, x, that is passed in as well.
+     * @param n the coefficient index to retrieve.
+     * @param x the evaluation point.
+     * @return the n-th a coefficient.
      */
     protected abstract double getA(int n, double x);
 
     /**
-     * Defines the <a href="http://mathworld.wolfram.com/ContinuedFraction.html">
-     * {@code n}-th "b" coefficient</a> of the continued fraction.
-     *
-     * @param n Index of the coefficient to retrieve.
-     * @param x Evaluation point.
-     * @return the coefficient <code>b<sub>n</sub></code>.
+     * Access the n-th b coefficient of the continued fraction.  Since b can be
+     * a function of the evaluation point, x, that is passed in as well.
+     * @param n the coefficient index to retrieve.
+     * @param x the evaluation point.
+     * @return the n-th b coefficient.
      */
     protected abstract double getB(int n, double x);
 
     /**
-     * Evaluates the continued fraction.
-     *
-     * @param x Point at which to evaluate the continued fraction.
-     * @return the value of the continued fraction evaluated at {@code x}.
+     * Evaluates the continued fraction at the value x.
+     * @param x the evaluation point.
+     * @return the value of the continued fraction evaluated at x.
      * @throws ArithmeticException if the algorithm fails to converge.
-     * @throws ArithmeticException if the maximal number of iterations is reached
-     * before the expected convergence is achieved.
-     *
-     * @see #evaluate(double,double,int)
      */
     public double evaluate(double x) {
         return evaluate(x, DEFAULT_EPSILON, Integer.MAX_VALUE);
     }
 
     /**
-     * Evaluates the continued fraction.
-     *
+     * Evaluates the continued fraction at the value x.
      * @param x the evaluation point.
-     * @param epsilon Maximum error allowed.
-     * @return the value of the continued fraction evaluated at {@code x}.
+     * @param epsilon maximum error allowed.
+     * @return the value of the continued fraction evaluated at x.
      * @throws ArithmeticException if the algorithm fails to converge.
-     * @throws ArithmeticException if the maximal number of iterations is reached
-     * before the expected convergence is achieved.
-     *
-     * @see #evaluate(double,double,int)
      */
     public double evaluate(double x, double epsilon) {
         return evaluate(x, epsilon, Integer.MAX_VALUE);
@@ -82,20 +70,17 @@ public abstract class ContinuedFraction {
     /**
      * Evaluates the continued fraction at the value x.
      * @param x the evaluation point.
-     * @param maxIterations Maximum number of iterations.
-     * @return the value of the continued fraction evaluated at {@code x}.
+     * @param maxIterations maximum number of convergents
+     * @return the value of the continued fraction evaluated at x.
      * @throws ArithmeticException if the algorithm fails to converge.
-     * @throws ArithmeticException if the maximal number of iterations is reached
-     * before the expected convergence is achieved.
-     *
-     * @see #evaluate(double,double,int)
+     * @throws ArithmeticException if maximal number of iterations is reached
      */
     public double evaluate(double x, int maxIterations) {
         return evaluate(x, DEFAULT_EPSILON, maxIterations);
     }
 
     /**
-     * Evaluates the continued fraction.
+     * Evaluates the continued fraction at the value x.
      * <p>
      * The implementation of this method is based on the modified Lentz algorithm as described
      * on page 18 ff. in:
@@ -109,13 +94,17 @@ public abstract class ContinuedFraction {
      *   </li>
      * </ul>
      *
-     * @param x Point at which to evaluate the continued fraction.
-     * @param epsilon Maximum error allowed.
-     * @param maxIterations Maximum number of iterations.
-     * @return the value of the continued fraction evaluated at {@code x}.
+     * <p>
+     * <b>Note:</b> the implementation uses the terms a<sub>i</sub> and b<sub>i</sub> as defined in
+     * <a href="http://mathworld.wolfram.com/ContinuedFraction.html">Continued Fraction @ MathWorld</a>.
+     * </p>
+     *
+     * @param x the evaluation point.
+     * @param epsilon maximum error allowed.
+     * @param maxIterations maximum number of convergents
+     * @return the value of the continued fraction evaluated at x.
      * @throws ArithmeticException if the algorithm fails to converge.
-     * @throws ArithmeticException if the maximal number of iterations is reached
-     * before the expected convergence is achieved.
+     * @throws ArithmeticException if maximal number of iterations is reached
      */
     public double evaluate(double x, double epsilon, int maxIterations) {
         final double small = 1e-50;
@@ -131,7 +120,7 @@ public abstract class ContinuedFraction {
         double cPrev = hPrev;
         double hN = hPrev;
 
-        while (n <= maxIterations) {
+        while (n < maxIterations) {
             final double a = getA(n, x);
             final double b = getB(n, x);
 
@@ -157,16 +146,21 @@ public abstract class ContinuedFraction {
                                                x);
             }
 
-            if (Math.abs(deltaN - 1) < epsilon) {
-                return hN;
+            if (Math.abs(deltaN - 1.0) < epsilon) {
+                break;
             }
 
             dPrev = dN;
             cPrev = cN;
             hPrev = hN;
-            ++n;
+            n++;
         }
 
-        throw new FractionException("maximal count ({0}) exceeded", maxIterations);
+        if (n >= maxIterations) {
+            throw new FractionException("maximal count ({0}) exceeded", maxIterations);
+        }
+
+        return hN;
     }
+
 }

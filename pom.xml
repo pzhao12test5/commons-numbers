@@ -102,7 +102,6 @@
          name of the base package evolves with major release numbers
          (see "commons.osgi.symbolicName", below). -->
     <commons.componentid>numbers</commons.componentid>
-    <commons.module.name>org.apache.commons.numbers</commons.module.name>
     <!-- This value must reflect the current name of the base package. -->
     <commons.osgi.symbolicName>org.apache.commons.numbers</commons.osgi.symbolicName>
     <!-- OSGi -->
@@ -615,10 +614,7 @@
     <module>commons-numbers-primes</module>
     <module>commons-numbers-quaternion</module>
     <module>commons-numbers-fraction</module>
-    <module>commons-numbers-angle</module>
     <module>commons-numbers-gamma</module>
-    <module>commons-numbers-combinatorics</module>
-    <module>commons-numbers-arrays</module>
   </modules>
 
 </project>
